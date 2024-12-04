@@ -2,7 +2,7 @@
 SELECT nom, tempsPreparation, nomCategorie AS categorie
 FROM recette
 
-JOIN categorie
+INNER JOIN categorie
 ON recette.id_Categorie = categorie.id_Categorie
 
 ORDER BY tempsPreparation DESC
@@ -12,13 +12,13 @@ ORDER BY tempsPreparation DESC
 SELECT nom, tempsPreparation, nomCategorie, COUNT(id_ingredient) AS nombreIngredients
 FROM recette
 
-JOIN categorie
+INNER JOIN categorie
 ON recette.id_Categorie = categorie.id_Categorie
 
-JOIN miseenplace
+INNER JOIN miseenplace
 ON recette.id_Recette = miseenplace.id_Recette
 
-GROUP BY recette.id_Recette, nom, tempsPreparation, nomCategorie
+GROUP BY recette.id_Recette
 
 ORDER BY tempsPreparation DESC
 
@@ -34,15 +34,14 @@ WHERE recette.nom LIKE '%Salade%'
 
 -- 5.- Ajouter pates carbo
 
-SELECT recette.nom FROM recette
-WHERE recette.nom LIKE '%Salade%'INSERT INTO recette
-VALUES ('8', 'Pates a la carbonara', '35', 'Faire ceci faire cela', '2')
+INSERT INTO recette
+VALUES (8, 'Pates a la carbonara', 35, 'Faire ceci faire cela', 2)
 
 --6.- Modifier nom recette numero 3
 
 UPDATE recette
 SET nom = 'Velouté de carrote'
-WHERE id_recette = '3'
+WHERE id_recette = 3
 
 -- 7.- Ajouter pas carbo
 
@@ -57,15 +56,15 @@ WHERE id_recette = 2;
 SELECT recette.id_Recette, recette.nom, SUM(ingredient.prixIngredient) AS prixTotal
 FROM recette
 
-JOIN miseenplace
+INNER JOIN miseenplace
 ON recette.id_recette = miseenplace.id_recette
 
-JOIN ingredient
+INNER JOIN ingredient
 ON miseenplace.id_ingredient = ingredient.id_Ingredient
 
 WHERE recette.id_Recette = 5
 
-GROUP BY	recette.id_Recette, nom;
+GROUP BY	recette.id_Recette
 
 --9.- Details de la recette 5
 
@@ -79,10 +78,10 @@ SUM(ingredient.prixIngredient) AS prixTotal
 
 FROM recette
 
-JOIN miseenplace
+INNER JOIN miseenplace
 ON recette.id_recette = miseenplace.id_recette
 
-JOIN ingredient
+INNER JOIN ingredient
 ON miseenplace.id_ingredient = ingredient.id_Ingredient
 
 WHERE recette.id_Recette = 5
@@ -104,7 +103,7 @@ WHERE id_Ingredient = 12
 SELECT categorie.nomCategorie, COUNT(recette.id_Recette) AS Quantité
 FROM recette
 
-JOIN categorie 
+INNER JOIN categorie 
 ON recette.id_Categorie = categorie.id_Categorie
 
 GROUP BY categorie.nomCategorie;
@@ -115,7 +114,7 @@ SELECT
    ingredient.nomIngredient
 FROM recette
 
-JOIN miseenplace 
+INNER JOIN miseenplace 
 ON recette.id_recette = miseenplace.id_recette
 
 JOIN ingredient 
