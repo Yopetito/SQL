@@ -186,3 +186,22 @@ HAVING COUNT(ingredient.id_ingredient) >= 3
 --19.-Ajouter un nouvel ingrédient à une recette spécifique
 INSERT INTO miseenplace(id_ingredient, id_recette, qttIngredient, uniteDeMesure, prixIngredient)
 VALUES(4, 4, 1, 'piece', 2)
+
+--20.- Trouver la recette la plus chere
+/* WITH (CTE common table expression) crée une table temporaire (ici nommée recetteLaPlusChere, avec une requete scondaire
+afin de l'utiliser dans la requete principale.  */
+
+WITH recetteLaPlusChere AS (
+	SELECT nom, SUM(miseenplace.prixIngredient) AS prixTotal
+	FROM recette
+
+	JOIN miseenplace
+	ON recette.id_recette = miseenplace.id_recette
+
+	GROUP BY nom
+	)
+
+SELECT nom, prixTotal
+FROM recetteLaPlusChere
+WHERE prixTotal = (SELECT MAX(prixTotal) FROM recetteLaPlusChere);
+
