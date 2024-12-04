@@ -125,3 +125,64 @@ WHERE ingredient.nomIngredient LIKE '%Poulet%';
 --14.- Diminuter de 5 min le temps de prepa de toutes recettes
 UPDATE recette
 SET tempsPreparation = tempsPreparation - 5;
+
+--15.Afficher les recettes qui ne nécessitent pas d’ingrédients coûtant plus de 2€ par unité de mesure 
+
+SELECT nom
+FROM recette
+
+INNER JOIN miseenplace
+ON recette.id_recette = miseenplace.id_recette
+
+WHERE miseenplace.prixIngredient <= 2
+
+GROUP BY nom;
+
+--16.- Afficher la / les recette(s) les plus rapides à préparer
+
+SELECT
+	nom, tempsPreparation AS Temps
+FROM
+	recette
+
+WHERE 
+	tempsPreparation = (SELECT MIN(tempsPreparation) FROM recette)
+
+/*----------------------------------------------------------------*/
+
+SELECT
+	nom, tempsPreparation AS Temps
+FROM
+	recette
+
+HAVING 
+	tempsPreparation = ALL (SELECT MIN(tempsPreparation) FROM recette)
+
+--17.- Trouver les recettes qui ne nécessitent aucun ingrédient (par exemple la recette de la tasse d’eau 
+--chaude qui consiste à verser de l’eau chaude dans une tasse)
+
+SELECT nom
+FROM recette
+
+LEFT JOIN miseenplace
+ON recette.id_recette = miseenplace.id_recette
+
+WHERE miseenplace.id_ingredient IS NULL
+
+--18.- Trouver les ingrédients qui sont utilisés dans au moins 3 recettes
+
+SELECT nomIngredient
+FROM ingredient
+
+INNER JOIN miseenplace
+ON ingredient.id_ingredient = miseenplace.id_ingredient
+
+INNER JOIN recette
+ON miseenplace.id_recette = recette.id_recette
+
+GROUP BY nomIngredient
+HAVING COUNT(ingredient.id_ingredient) >= 3
+
+--19.-Ajouter un nouvel ingrédient à une recette spécifique
+INSERT INTO miseenplace(id_ingredient, id_recette, qttIngredient, uniteDeMesure, prixIngredient)
+VALUES(4, 4, 1, 'piece', 2)
