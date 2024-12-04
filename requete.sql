@@ -100,3 +100,29 @@ SET prixIngredient = 50
 WHERE id_Ingredient = 12
 
 --12.- afficher nombre de recettes par categorie
+
+SELECT categorie.nomCategorie, COUNT(recette.id_Recette) AS Quantité
+FROM recette
+
+JOIN categorie 
+ON recette.id_Categorie = categorie.id_Categorie
+
+GROUP BY categorie.nomCategorie;
+
+--13.- Afficher recettes avec ingredient Poulet
+SELECT 
+   recette.nom AS recette_nom, 
+   ingredient.nomIngredient
+FROM recette
+
+JOIN miseenplace 
+ON recette.id_recette = miseenplace.id_recette
+
+JOIN ingredient 
+ON miseenplace.id_ingredient = ingredient.id_ingredient
+
+WHERE ingredient.nomIngredient LIKE '%Poulet%';
+
+--14.- Diminuter de 5 min le temps de prepa de toutes recettes
+UPDATE recette
+SET tempsPreparation = tempsPreparation - 5;
