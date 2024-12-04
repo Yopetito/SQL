@@ -1,4 +1,3 @@
-
 -- 1.- afficher recettes dispo (nom, catégorie, temps de prepa-
 SELECT nom, tempsPreparation, nomCategorie AS categorie
 FROM recette
@@ -8,7 +7,7 @@ ON recette.id_Categorie = categorie.id_Categorie
 
 ORDER BY tempsPreparation DESC
 
-2.- ajouter nombre d'ingrédients
+2.- ajouter nombre dingrédients
 
 SELECT nom, tempsPreparation, nomCategorie, COUNT(id_ingredient) AS nombreIngredients
 FROM recette
