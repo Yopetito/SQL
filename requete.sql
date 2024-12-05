@@ -226,4 +226,19 @@ HAVING prixTotal >= ALL(
 	GROUP BY nom
 	
 	)
+------------------------------------------------------------------------
+Table virtuelle
 
+CREATE VIEW recetteLaPlusChere AS 
+	SELECT nom, SUM(miseenplace.prixIngredient * miseenplace.qttIngredient) AS prixTotal
+	FROM recette
+
+	JOIN miseenplace
+	ON recette.id_recette = miseenplace.id_recette
+
+	GROUP BY nom;
+
+---------
+SELECT nom, prixTotal                                            
+FROM recetteLaPlusChere                                          
+WHERE prixTotal = (SELECT MAX(prixTotal) FROM recettelapluschere)
