@@ -128,15 +128,16 @@ SET tempsPreparation = tempsPreparation - 5;
 
 --15.Afficher les recettes qui ne nécessitent pas d’ingrédients coûtant plus de 2€ par unité de mesure 
 
-SELECT nom
+SELECT recette.id_recette, recette.nom
 FROM recette
-
-INNER JOIN miseenplace
-ON recette.id_recette = miseenplace.id_recette
-
-WHERE miseenplace.prixIngredient <= 2
-
-GROUP BY nom;
+WHERE recette.id_recette NOT IN (
+	SELECT miseenplace.id_recette
+	FROM miseenplace
+	WHERE recette.id_recette = miseenplace.id_recette
+	AND miseenplace.prixIngredient > 2
+	)
+  
+	
 
 --16.- Afficher la / les recette(s) les plus rapides à préparer
 
