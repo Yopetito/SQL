@@ -206,3 +206,24 @@ SELECT nom, prixTotal
 FROM recetteLaPlusChere
 WHERE prixTotal = (SELECT MAX(prixTotal) FROM recetteLaPlusChere);
 
+
+----------------------------------------------------------------------------
+
+SELECT nom, SUM(miseenplace.prixIngredient) AS prixTotal
+FROM recette
+
+INNER JOIN miseenplace
+ON recette.id_recette = miseenplace.id_recette
+
+GROUP BY nom
+	
+HAVING prixTotal >= ALL(
+	SELECT SUM(miseenplace.prixIngredient) 
+	FROM recette
+	INNER JOIN miseenplace
+	ON recette.id_recette = miseenplace.id_recette
+
+	GROUP BY nom
+	
+	)
+
